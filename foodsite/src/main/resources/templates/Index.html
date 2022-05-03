@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Page</title>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap-4.0.0.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">EatService</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/recipes">Recipes</a>
+            </li>
+			  <li class="nav-item">
+              <a class="nav-link" href="/chiefs">Chiefs</a>
+            </li>
+			  <li class="nav-item">
+              <a class="nav-link" href="/coc">Cocktails</a>
+            </li>
+			  <li class="nav-item">
+              <a class="nav-link" href="/wine">Wine</a>
+            </li>
+            
+          </ul>
+          <form class="form-inline my-2 my-lg-0" action="/search">
+            <input class="form-control mr-sm-2" type="search" id="search" name="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+          &nbsp;&nbsp;&nbsp;<a href="/add"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add</button></a>
+        </div>
+      </div>
+    </nav>
+
+  
+    <hr>
+    <h2 class="text-center">POPULAR RECIPES</h2>
+    <hr>
+    <div class="container">
+
+      <div class="row text-center mt-4">
+        <div class="col-md-4 pb-1 pb-md-0">
+
+          <div th:each="el : ${foods}">
+
+            <div class="card">
+              <img class="card-img-top" th:src="${el.pic}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title" th:text="${el.title}"/>
+                <p class="card-text" th:text="${el.text}"/>
+                <a th:href="'/recip/'+ ${el.id}" class="btn btn-primary">Show</a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+    <hr>
+    <h2 class="text-center">NEW RECIPES</h2>
+    <hr>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+
+
+          <div th:each="el : ${fn}">
+
+            <div class="card">
+              <img class="card-img-top" th:src="${el.pic}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title" th:text="${el.title}"/>
+                <p class="card-text" th:text="${el.text}"/>
+                <a th:href="'/recip/'+ ${el.id}" class="btn btn-primary">Show</a>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+    <hr>
+     <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 mb-md-0 mb-2">
+          <h2>Contact Us</h2>
+          <address>
+            <strong>EatService, Inc.</strong><br>
+            Sunny Autumn Plaza, Grand Coulee,<br>
+            CA, 91308-4075, US<br>
+			  <abbr title="Phone">P:</abbr> (123) 456-7890
+        
+          </address>
+			<strong>Ramunis</strong><br>
+            <a href="mailto:#">seva.m@live.com</a>
+          <h4>Social</h4>
+          <div class="row">
+            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+          <h2>Sites</h2>
+          <ul class="list-unstyled">
+           
+            <li class="media my-4">
+          
+              <div class="media-body">
+                 <ul class="list-unstyled">
+                <li class="btn-link"> <a href="/">Home</a> </li>
+                <li class="btn-link"> <a href="/recipes">Recipes</a> </li>
+                <li class="btn-link"> <a href="/chiefs">Chiefs </a> </li>
+                <li class="btn-link"> <a href="/coc">Cocktails</a> </li>
+                <li class="btn-link"> <a href="/wine">Wine</a> </li>
+              </ul>
+               
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-12">
+          <h2>About Us</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.</p>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <footer class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>Copyright © RamunisSoft. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap-4.0.0.js"></script>
+  </body>
+</html>
