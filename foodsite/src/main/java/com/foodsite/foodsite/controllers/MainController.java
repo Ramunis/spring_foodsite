@@ -1,14 +1,14 @@
 package com.foodsite.foodsite.controllers;
 
-import com.foodsite.foodsite.models.Client;
-import com.foodsite.foodsite.models.Food;
-import com.foodsite.foodsite.models.Theme;
+import com.foodsite.foodsite.models.*;
 import com.foodsite.foodsite.repo.ClientRepository;
 import com.foodsite.foodsite.repo.FoodRepository;
 import com.foodsite.foodsite.repo.ThemeRepository;
+import com.foodsite.foodsite.repo.UserRepository;
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -20,6 +20,8 @@ import java.util.*;
 @Controller
 public class MainController {
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private ClientRepository clientRepository;
 
@@ -116,16 +118,18 @@ public class MainController {
     }
 
     //
-    @GetMapping("/mybook")
-    public String Mybook(Model model) {
-        model.addAttribute("title", "Mybook");
-        return "Mybook";
-    }
 
-    @GetMapping("/myrec")
-    public String Myrec(Model model) {
-        model.addAttribute("title", "Myrec");
-        return "Myrec";
+
+    @GetMapping("/account")
+    public String Acccount(Model model,Authentication authentication) {
+        if (authentication != null) {
+            Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+            String login = authentication1.getName();
+            Integer uid = userRepository.getidByName(login);
+            return "redirect:/user/"+uid+"";
+        }
+        else
+            return "redirect:/reg";
     }
     //
     @GetMapping("/reg")
@@ -135,33 +139,54 @@ public class MainController {
     }
 
     @PostMapping("/reg")
-    public String RegAdd(@RequestParam String username,@RequestParam String password,@RequestParam String firstName, @RequestParam String lastName,@RequestParam String country,@RequestParam String city,@RequestParam String email,@RequestParam String picture, Model model) {
+    public String RegAdd(User user,@RequestParam String username,@RequestParam String password,@RequestParam String firstName, @RequestParam String lastName,@RequestParam String country,@RequestParam String city,@RequestParam String email,@RequestParam String picture, Model model) {
+
+        User userFromDb = userRepository.findByUsername(username);
+
+        if (userFromDb != null) {
+            return "Reg";
+        }
 
         Date date=new Date();
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate=dateFormat.format(date);
         String dr=formattedDate;
 
-        Client client = new Client(username, password, dr ,firstName, lastName, country, city,email, picture);
+        user.setPassword(password);
+        user.setUsername(username);
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        userRepository.save(user);
+
+        Client client = new Client(username, "1", dr ,firstName, lastName, country, city,email, picture);
         clientRepository.save(client);
         return "redirect:/recipes";
     }
 
     @GetMapping("/add")
-    public String Add(Model model) {
+    public String Add(Model model,Authentication authentication) {
         Iterable<Theme> themes = themeRepository.findAll();
         model.addAttribute("themes", themes);
-        return "Add";
+
+        if (authentication != null)
+            return "Add";
+        else
+            return "redirect:/login";
+
     }
 
     @PostMapping("/add")
     public String AddAdd(@RequestParam String Name,@RequestParam int area,@RequestParam String About,@RequestParam String Len, @RequestParam String Ing,@RequestParam String Step,@RequestParam String Picture,@RequestParam String Youtube, Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Integer uid = userRepository.getidByName(login);
+
         Date date=new Date();
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate=dateFormat.format(date);
         String dr=formattedDate;
-        Client client = clientRepository.findById(Long.valueOf(1)).orElseThrow();
+        Client client = clientRepository.findById(Long.valueOf(uid)).orElseThrow();
         Theme theme = themeRepository.findById(Long.valueOf(area)).orElseThrow();
         Food food = new Food(dr, Name, About, Len, Ing, Step, Picture, Youtube, client, theme);
         foodRepository.save(food);

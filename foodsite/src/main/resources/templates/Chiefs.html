@@ -39,6 +39,8 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
           &nbsp;&nbsp;&nbsp;<a href="/add"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add</button></a>
+          &nbsp;&nbsp;&nbsp;<a href="/account"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Account</button></a>
+
         </div>
       </div>
     </nav>
@@ -51,22 +53,37 @@
       <div class="row text-center">
         <div class="col-md-4 pb-1 pb-md-0">
 
-          <div th:each="el : ${clients}">
-
-          <div class="card">
-            <img class="card-img-top" th:src="${el.pic}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title" th:text="${el.f}+' '+${el.i}"/>
-              <p class="card-text" th:text="${el.country}+','+${el.city}"/>
-              <a th:href="'/user/'+ ${el.id}" class="btn btn-primary">Show</a>
-            </div>
-          </div>
-
-            </div>
 
 
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Имя</th>
+              <th scope="col">Фамилия</th>
+              <th scope="col">Страна</th>
+              <th scope="col">Город</th>
+              <th scope="col">Изображение</th>
+              <th scope="col">Подробней</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <div th:each="el : ${clients}">
+
+              <tr>
+                <th scope="row"><h5 class="card-title" th:text="${el.f}"/></th>
+                <th scope="row"><h5 class="card-title" th:text="${el.i}"/></th>
+                <td><p class="card-text" th:text="${el.country}"/></td>
+                <td><p class="card-text" th:text="${el.city}"/></td>
+                <td><input type="image" name="pic" th:src="${el.pic}" width="180"></td>
+                <td><a th:href="'/user/'+ ${el.id}" class="btn btn-primary">Show</a></td>
+              </tr>
+            </tbody>
 
         </div>
+
+        </table>
+
 
 
       </div>
@@ -104,6 +121,9 @@
           
               <div class="media-body">
                 <ul class="list-unstyled">
+                  <li class="btn-link"> <a href="/login">Sign In</a> </li>
+                  <li class="btn-link"> <a href="/reg">Registration</a> </li>
+                  <li class="btn-link"> <a href="/logout">Logout</a> </li>
                   <li class="btn-link"> <a href="/">Home</a> </li>
                   <li class="btn-link"> <a href="/recipes">Recipes</a> </li>
                   <li class="btn-link"> <a href="/chiefs">Chiefs </a> </li>

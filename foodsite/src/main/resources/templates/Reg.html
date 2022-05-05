@@ -41,6 +41,7 @@
             <img class="d-block mx-auto mb-4" src="/images/Windows_Live_Messenger_icon.png" alt="" width="72" height="57">
             <h2>Регистрация</h2>
             <p class="lead">Будет создана учётная запись в системе.</p>
+            <p class="lead">Если учётная запись есть, <a href="/login">Авторизуйтесь</a></p>
         </div>
 
         <div class="row g-5">
@@ -98,6 +99,9 @@
               <div class="invalid-feedback">
               </div>
                             </div>
+
+
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
 
 
