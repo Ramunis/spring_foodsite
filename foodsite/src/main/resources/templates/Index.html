@@ -1,212 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home Page</title>
-    <!-- Bootstrap -->
-    <link href="/css/bootstrap-4.0.0.css" rel="stylesheet">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">EatService</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/recipes">Recipes</a>
-            </li>
-			  <li class="nav-item">
-              <a class="nav-link" href="/chiefs">Chiefs</a>
-            </li>
-			  <li class="nav-item">
-              <a class="nav-link" href="/coc">Cocktails</a>
-            </li>
-			  <li class="nav-item">
-              <a class="nav-link" href="/wine">Wine</a>
-            </li>
-            
-          </ul>
-          <form class="form-inline my-2 my-lg-0" action="/search">
-            <input class="form-control mr-sm-2" type="search" id="search" name="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-          &nbsp;&nbsp;&nbsp;<a href="/add"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add</button></a>
-          &nbsp;&nbsp;&nbsp;<a href="/account"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Account</button></a>
 
-        </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EatService</title>
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<header th:insert="blocks/header :: header"></header>
+
+<main>
+
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Кулинарный Каталог</h1>
+        <p class="lead text-muted">Кулинарные рецепты разбиты по категориям с функцией поиска.</p>
+        <p>
+          <a href="/recipes" class="btn btn-primary my-2">Каталог</a>
+          <a href="/add" class="btn btn-secondary my-2">Добавить свой рецепт</a>
+        </p>
       </div>
-    </nav>
+    </div>
+  </section>
 
-  
-    <hr>
-    <h2 class="text-center">POPULAR RECIPES</h2>
-    <hr>
+  <div class="album py-5 bg-light">
     <div class="container">
 
-      <div class="row text-center">
-        <div class="col-md-4 pb-1 pb-md-0">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
+        <div th:each="el : ${foods}">
 
+          <div class="col">
+            <div class="card shadow-sm">
+             <h1 class="card-text"><h5 class="card-title" th:text="${el.title}"/></h1>
+              <small class="text-muted"><p class="card-text" th:text="'Preparing length: '+${el.len}"/></small>
+              <img class="group list-group-image" th:src="${el.pic}" width="300" height="300" alt="1" />
 
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Автор</th>
-              <th scope="col">Название</th>
-              <th scope="col">Описание</th>
-              <th scope="col">Длительность</th>
-              <th scope="col">Размещено</th>
-              <th scope="col">Изображение</th>
-              <th scope="col">Подробней</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <div th:each="el : ${foods}">
-
-              <tr>
-                <th scope="row"><h5 class="card-title" th:text="${el.client.f}+' '+${el.client.i}"/></th>
-                <th scope="row"><h5 class="card-title" th:text="${el.title}"/></th>
-                <td><p class="card-text" th:text="${el.text}"/></td>
-                <td><p class="card-text" th:text="${el.len}"/></td>
-                <td><p class="card-text" th:text="${el.df}"/></td>
-                <td><input type="image" name="pic" th:src="${el.pic}" width="180"></td>
-                <td><a th:href="'/recip/'+ ${el.id}" class="btn btn-primary">Show</a></td>
-              </tr>
-            </tbody>
-
-        </div>
-
-        </table>
-
-
-
-      </div>
-
-    </div>
-    <hr>
-    <h2 class="text-center">NEW RECIPES</h2>
-    <hr>
-    <div class="container">
-
-      <div class="row text-center">
-        <div class="col-md-4 pb-1 pb-md-0">
-
-
-
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Автор</th>
-              <th scope="col">Название</th>
-              <th scope="col">Описание</th>
-              <th scope="col">Длительность</th>
-              <th scope="col">Размещено</th>
-              <th scope="col">Изображение</th>
-              <th scope="col">Подробней</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <div th:each="el : ${fn}">
-
-              <tr>
-                <th scope="row"><h5 class="card-title" th:text="${el.client.f}+' '+${el.client.i}"/></th>
-                <th scope="row"><h5 class="card-title" th:text="${el.title}"/></th>
-                <td><p class="card-text" th:text="${el.text}"/></td>
-                <td><p class="card-text" th:text="${el.len}"/></td>
-                <td><p class="card-text" th:text="${el.df}"/></td>
-                <td><input type="image" name="pic" th:src="${el.pic}" width="180"></td>
-                <td><a th:href="'/recip/'+ ${el.id}" class="btn btn-primary">Show</a></td>
-              </tr>
-            </tbody>
-
-        </div>
-
-        </table>
-
-
-
-      </div>
-
-    </div>
-    <hr>
-     <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 mb-md-0 mb-2">
-          <h2>Contact Us</h2>
-          <address>
-            <strong>EatService, Inc.</strong><br>
-            Sunny Autumn Plaza, Grand Coulee,<br>
-            CA, 91308-4075, US<br>
-			  <abbr title="Phone">P:</abbr> (123) 456-7890
-        
-          </address>
-			<strong>Ramunis</strong><br>
-            <a href="mailto:#">seva.m@live.com</a>
-          <h4>Social</h4>
-          <div class="row">
-            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
-            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
-            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
-            <div class="col-2"><img class="rounded-circle" src="/images/32X32.gif" alt=""></div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-12">
-          <h2>Sites</h2>
-          <ul class="list-unstyled">
-           
-            <li class="media my-4">
-          
-              <div class="media-body">
-                 <ul class="list-unstyled">
-                   <ul class="list-unstyled">
-                     <li class="btn-link"> <a href="/account">Account</a> </li>
-                     <li class="btn-link"> <a href="/login">Sign In</a> </li>
-                     <li class="btn-link"> <a href="/reg">Registration</a> </li>
-                     <li class="btn-link"> <a href="/logout">Logout</a> </li>
-                     <li class="btn-link"> <a href="/">Home</a> </li>
-                     <li class="btn-link"> <a href="/recipes">Recipes</a> </li>
-                     <li class="btn-link"> <a href="/chiefs">Chiefs </a> </li>
-                     <li class="btn-link"> <a href="/coc">Cocktails</a> </li>
-                     <li class="btn-link"> <a href="/wine">Wine</a> </li>
-                   </ul>
-              </ul>
-               
+              <div class="card-body">
+                <p class="card-text" th:text="${el.text}"></p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a class="btn btn-warning" th:href="'/recip/'+ ${el.id}">Смотреть</a>
+                  </div>
+                  <small class="text-muted"><p class="card-text" th:text="${el.df}"/></small>
+                </div>
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
+
         </div>
-        <div class="col-lg-4 col-12">
-          <h2>About Us</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, voluptates, soluta velit nostrum ut iste exercitationem vitae ipsum repellendus laudantium ab possimus nemo odio cumque illum nulla laborum blanditiis unde.</p>
-        </div>
+
       </div>
     </div>
-    <hr>
-    <footer class="text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <p>Copyright © RamunisSoft. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/js/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/js/popper.min.js"></script>
-    <script src="/js/bootstrap-4.0.0.js"></script>
-  </body>
+  </div>
+
+</main>
+</body>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+
 </html>

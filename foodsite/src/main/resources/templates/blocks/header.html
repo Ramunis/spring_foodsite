@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="header">
+
+
+    <nav class="navbar navbar-expand-lg bg-info navbar-light ">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="/">EatService</a>
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <!-- Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recipes">Recipes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chiefs">Chiefs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/coc">Cocktails</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/wine">Wine</a>
+                    </li>
+
+                </ul>
+
+                <a class="btn btn-outline-primary" href="/add">Добавить</a>
+                &nbsp;&nbsp;
+                <!-- Search -->
+                <form class="w-auto" action="/search/">
+                    <input type="search" id="s" name="s" class="form-control" placeholder="Search" aria-label="Search">
+                </form>
+
+                <div sec:authorize="!isAuthenticated()">
+                    &nbsp;&nbsp;
+                    <a class="btn btn-outline-primary" href="/login">Авторизация</a>
+                    <a class="btn btn-outline-primary" href="/reg">Регистрация</a>
+                </div>
+
+            </div>
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+</div>
+
+</html>

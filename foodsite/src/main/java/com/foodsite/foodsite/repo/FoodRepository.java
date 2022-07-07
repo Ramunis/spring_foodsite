@@ -24,7 +24,10 @@ public interface FoodRepository extends CrudRepository<Food, Long> {
     @Query(value="SELECT * FROM food WHERE client_id=:number", nativeQuery = true)
     public List<Food> getFoodByChief(Long number);
 
-    @Query(value="SELECT * FROM food WHERE title LIKE ':query%'", nativeQuery = true)
-    public List<Food> getFoodByName(String query);
+    @Query(value="SELECT * FROM food WHERE title LIKE ':s%'", nativeQuery = true)
+    public List<Food> getFoodByName(String s);
+
+    @Query(value="SELECT * FROM food WHERE title=:s", nativeQuery = true)
+    public List<Food> getFoodByTitle(String s);
 }
 

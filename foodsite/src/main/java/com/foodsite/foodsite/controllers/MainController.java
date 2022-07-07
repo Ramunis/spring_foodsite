@@ -60,6 +60,14 @@ public class MainController {
         return "Chiefs";
     }
 
+    @GetMapping("/filterc/{id}")
+    public String Filter(@PathVariable(value="id") String id, Model model) {
+        Iterable<Client> clients = clientRepository.getFoodByRegion(id);
+        model.addAttribute("clients", clients);
+        return "Chiefs";
+    }
+
+
     @GetMapping("/coc")
     public String Coc(Model model) {
         Integer number=1;
@@ -87,6 +95,38 @@ public class MainController {
         return "Recip";
     }
 
+    @GetMapping("/recip/{id}/edit")
+    public String RecipEdit(@PathVariable(value="id") long id, Model model) {
+        Optional<Food> food = foodRepository.findById(id);
+        ArrayList<Food> res = new ArrayList<>();
+        food.ifPresent(res::add);
+        model.addAttribute("food", res);
+        return "Edit";
+    }
+
+    @PostMapping("/recip/{id}/edit")
+    public String RecipUpdate(@PathVariable(value="id") long id,@RequestParam String Name,@RequestParam String About,@RequestParam String Len, @RequestParam String Ing,@RequestParam String Step,@RequestParam String Picture,@RequestParam String Youtube, Model model) {
+        Food food = foodRepository.findById(id).orElseThrow();
+        food.setTitle(Name);
+        food.setText(About);
+        food.setLen(Len);
+        food.setIng(Ing);
+        food.setStep(Step);
+        food.setPic(Picture);
+        food.setYoutube(Youtube);
+
+        foodRepository.save(food);
+        return "redirect:/recipes";
+    }
+
+    @PostMapping("/recip/{id}/remove")
+    public String RecipDel(@PathVariable(value="id") long id, Model model) {
+        Food food = foodRepository.findById(id).orElseThrow();
+        foodRepository.delete(food);
+
+        return "redirect:/recipes";
+    }
+
     @GetMapping("/user/{id}")
     public String User(@PathVariable(value="id") long id, Model model) {
         Optional<Client> client = clientRepository.findById(id);
@@ -108,16 +148,15 @@ public class MainController {
         return "Recipes";
     }
 
-    @PostMapping("/search")
-    public String Search(@RequestParam String search, Model model) {
-        List<Food> listfoods = foodRepository.getFoodByName(search);
+    @GetMapping("/search")
+    public String Search(Model model,@RequestParam String s) {
+        List<Food> listfoods = foodRepository.getFoodByTitle(s);
         model.addAttribute("foods", listfoods);
+
         Iterable<Theme> themes = themeRepository.findAll();
         model.addAttribute("themes", themes);
-        return "redirect:/recipes";
+        return "Recipes";
     }
-
-    //
 
 
     @GetMapping("/account")
@@ -126,7 +165,15 @@ public class MainController {
             Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
             String login = authentication1.getName();
             Integer uid = userRepository.getidByName(login);
-            return "redirect:/user/"+uid+"";
+            //return "redirect:/user/"+uid+"";
+            Optional<Client> client = clientRepository.findById(Long.valueOf(uid));
+            ArrayList<Client> res = new ArrayList<>();
+            client.ifPresent(res::add);
+            model.addAttribute("client", res);
+            List<Food> fl = foodRepository.getFoodByChief(Long.valueOf(uid));
+            model.addAttribute("fl", fl);
+
+            return "Account";
         }
         else
             return "redirect:/reg";

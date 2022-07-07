@@ -18,11 +18,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //super.configure(auth);
-
        // auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
          //       .withUser("superuser")
            //     .password("12345678")
@@ -31,7 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
               // .withUser("user")
               //  .password("4444")
               //  .roles("USER");
-
         auth.jdbcAuthentication()
                .dataSource(dataSource)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
@@ -39,7 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
                 //.usersByUsernameQuery("select username, password, role from user where username=?");
                 //.authoritiesByUsernameQuery("select username, role from user where username=?");
-
     }
 
     @Override

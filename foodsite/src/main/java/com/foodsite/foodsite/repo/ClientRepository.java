@@ -12,4 +12,7 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     @Query(value="SELECT * FROM client ORDER BY RAND() LIMIT 100", nativeQuery = true)
     public List<Client> getByTodayChief();
 
+    @Query(value="SELECT * FROM client WHERE country=:id", nativeQuery = true)
+    public List<Client> getFoodByRegion(String id);
+
 }
